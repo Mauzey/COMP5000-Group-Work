@@ -8,9 +8,9 @@ connection = sqlite3.connect("./delivery-database.db")
 cursor = connection.cursor()
 
 # Import data ----------------------------------------------------------------------------------------------------------
-customers_df = pd.read_csv("./data/customers.csv")
-locations_df = pd.read_csv("./data/locations.csv")
-orders_df = pd.read_csv("./data/orders.csv")
+customers_df = pd.read_csv("../data/customers.csv")
+locations_df = pd.read_csv("../data/locations.csv")
+orders_df = pd.read_csv("../data/orders.csv")
 
 # The assessment specification states that certain columns should be omitted; drop these columns:
 vendor_cols_to_drop = ['sunday_from_time1', 'sunday_to_time1', 'sunday_from_time2', 'sunday_to_time2',
@@ -20,7 +20,7 @@ vendor_cols_to_drop = ['sunday_from_time1', 'sunday_to_time1', 'sunday_from_time
                        'thursday_from_time1', 'thursday_to_time1', 'thursday_from_time2', 'thursday_to_time2',
                        'friday_from_time1', 'friday_to_time1', 'friday_from_time2', 'friday_to_time2',
                        'saturday_from_time1', 'saturday_to_time1', 'saturday_from_time2', 'saturday_to_time2']
-vendors_df = pd.read_csv("./data/vendors.csv").drop(vendor_cols_to_drop, axis=1)
+vendors_df = pd.read_csv("../data/vendors.csv").drop(vendor_cols_to_drop, axis=1)
 
 # Rename columns for the sake of continuity ----------------------------------------------------------------------------
 orders_colnames = {'deliverydistance': 'delivery_distance', 'preparationtime': 'preparation_time',
