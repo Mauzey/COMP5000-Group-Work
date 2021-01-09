@@ -4,7 +4,7 @@ import pandas as pd
 import sqlite3
 
 # Establish database connection
-connection = sqlite3.connect("./delivery-database.db")
+connection = sqlite3.connect("../data/delivery-database.db")
 cursor = connection.cursor()
 
 # Import data ----------------------------------------------------------------------------------------------------------
