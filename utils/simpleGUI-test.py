@@ -4,6 +4,17 @@ import sqlite3
 # sg.Window(title="Hello World", layout=[[]], margins=(200, 50)).read()
 # layout = [[sg.Text("Hello from PySimpleGUI")], [sg.Button("OK")]]
 
+# WHAT NEEDS TO BE INCLUDED:
+# - email
+# - name and surname
+# - phone number
+# - gender
+# - date of birth
+# - language
+# - delivery address
+# - zip code (postal code)
+
+
 def create_new_customer(val):
     connection = sqlite3.connect("../data/delivery-database.db")
 
@@ -18,7 +29,7 @@ def create_new_customer(val):
         sql_command = f"""
         INSERT INTO customers(akeed_customer_id, gender, 
         dob, status, verified, language, created_at, updated_at)
-        VALUES ('{str(val[0]).upper()}', NULLIF('{str(val[1])}', ''), NULLIF('{val[2]}', ''), 1, 1, NULLIF('{str(val[3])}', ''), 
+        VALUES ('{str(val[0]).upper()}', NULLIF('{str(val[1])}', ''), NULLIF('{val[2]}', ''), 0, 0, NULLIF('{str(val[3])}', ''), 
             datetime('now', 'localtime'), datetime('now', 'localtime')
             );
         """
