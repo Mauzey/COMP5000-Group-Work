@@ -20,7 +20,7 @@ class App(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)  # Initialize tkinter
 
-        # Instantiate tkinter window
+        # Instantiate tkinter window_new_customer
         window = tk.Frame(self)
         window.pack(side='top', fill='both', expand=True)
         window.grid_rowconfigure(0, weight=1)
