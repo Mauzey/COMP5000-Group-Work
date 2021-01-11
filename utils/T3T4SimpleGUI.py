@@ -9,10 +9,10 @@ def run_window_main():
         ],
         [
             sg.Button("New Customer", size=(15, 2)),
-            sg.Button("Dashboard", size=(15, 2))
+            sg.Button('Dashboard', size=(15, 2))
         ],
         [
-            sg.Button("Close", size=(15, 1), pad=((100, 0), (1, 1)))
+            sg.Button('Quit', size=(15, 1), pad=((100, 0), (1, 1)))
         ]
     ]
 
@@ -24,11 +24,11 @@ def run_window_main():
             window_navigation.close()
             run_window_new_customer()
 
-        elif event == "Dashboard":
+        elif event == 'Dashboard':
             window_navigation.close()
             run_window_dashboard()
 
-        elif event == "Close" or event == sg.WIN_CLOSED:
+        elif event in (None, 'Quit'):
             break
     window_navigation.close()
 
@@ -71,7 +71,7 @@ def run_window_new_customer():
             sg.In(size=(25, 1))
         ],
         [
-            sg.Button("Add", size=(10, 1))
+            sg.Button('Add', size=(10, 1))
         ]
     ]
 
@@ -80,27 +80,27 @@ def run_window_new_customer():
             sg.Text("Navigation:")
         ],
         [
-            sg.Button("Main", size=(6, 2))
+            sg.Button('Main', size=(6, 2))
         ],
         [
-            sg.Button("Quit", size=(6, 2))
+            sg.Button('Quit', size=(6, 2))
         ]
     ]
 
-    layout_t3 = [
+    layout_customer = [
         [
             sg.Column(new_customer_section),
             sg.Column(navigation_section)
         ]
     ]
 
-    window_new_customer = sg.Window("New Customer", layout_t3)
+    window_new_customer = sg.Window("New Customer", layout_customer)
 
     # Create an event loop
     while True:
         event, values = window_new_customer.read()
 
-        if event == "Add":
+        if event == 'Add':
             print("Adding the following values to the 'customers' table:\n", values)
             sql_command = f"""
                         INSERT INTO customers (akeed_customer_id, gender, 
@@ -113,10 +113,11 @@ def run_window_new_customer():
                         """
 
             run_sql_command(sql_command)
+            del sql_command
 
-        elif event == sg.WIN_CLOSED or event == "Quit":
+        elif event in (None, 'Quit'):
             break
-        elif event == "Main":
+        elif event == 'Main':
             window_new_customer.close()
             run_window_main()
 
@@ -130,63 +131,91 @@ def run_window_dashboard():
             sg.Text("Navigation:")
         ],
         [
-            sg.Button("Main", size=(6, 2))
+            sg.Button('Main', size=(6, 2))
         ],
         [
-            sg.Button("Quit", size=(6, 2))
+            sg.Button('Quit', size=(6, 2))
+        ]
+    ]
+
+    plot_layout = [
+        [
+        sg.Button("Oh Come the Great Histogram!", key='hist')
         ]
     ]
 
     dashboard_section = [
         [
             # • Print the mean ’item count’ (number of items per order)
-            sg.Button("Mean Number of Items Per Order", key='mean_num', size=(25,1)),
+            sg.Button("Mean Item Count", key='mean_num', size=(20,1), tooltip="Average Number of Items Per Order"),
             sg.Text(size=(20, 1), key='mean_num_out')
         ],
         [
             # • Print the mean ’grand total’ (cost of the order)
-            sg.Button("Mean Cost Of the Orders", key='mean_cost', size=(25,1)),
+            sg.Button("Mean Grand Total", key='mean_cost', size=(20,1), tooltip="Average Cost Of an Order"),
             sg.Text(size=(20, 1), key='mean_cost_out')
         ],
         [
-            # • Plot a histogram of the ’deliverydistance’
-            sg.Text("Here shall be the greatest plot\nJust wait a bit...")
+            # • Plot a histogram of the ’delivery distance’
+            sg.Frame("Here the Greatest Histogram of The Century Shall Be Displayed:", plot_layout)
         ]
     ]
 
-    layout_t4 = [
+    layout_dshb = [
         [
             sg.Column(dashboard_section),
             sg.Column(navigation_section)
         ]
     ]
-    window_dashboard = sg.Window("New Customer", layout_t4)
+    window_dashboard = sg.Window("New Customer", layout_dshb)
     # Create an event loop
     while True:
         event, values = window_dashboard.read()
 
-        if event == sg.WIN_CLOSED or event == "Quit":
+        if event in (None, 'Quit'):
             break
 
-        elif event == "Main":
+        elif event == 'Main':
             window_dashboard.close()
             run_window_main()
 
-        elif event == "mean_num":
+        elif event == 'mean_num':
             sql_command = """
                 SELECT AVG(item_count) 
                 FROM orders;
             """
             number = run_sql_command(sql_command)
+            del sql_command
+
             window_dashboard['mean_num_out'].update(round(number[0][0], 2))
 
-        elif event == "mean_cost":
+        elif event == 'mean_cost':
             sql_command = """
                 SELECT AVG(grand_total) 
                 FROM orders;
             """
             number = run_sql_command(sql_command)
+            del sql_command
+
             window_dashboard['mean_cost_out'].update(round(number[0][0], 3))
+
+        elif event == 'hist':
+            sql_command = """
+                SELECT delivery_distance 
+                FROM orders;
+            """
+            distance_list = run_sql_command(sql_command)
+            del sql_command
+
+            delivery_distance = []
+
+            for i in distance_list:
+                delivery_distance.append(i[0])
+
+            del distance_list
+            draw_plot(delivery_distance)
+
+
 
     window_dashboard.close()
 
@@ -198,9 +227,15 @@ def run_sql_command(command):
     cursor = connection.cursor()
     cursor.execute(command)
     result = cursor.fetchall()
+
     connection.commit()
     connection.close()
+
     return result
+
+
+def draw_plot(numbers):
+    print("Test")
 
 
 # Task 3 (20 marks) Write a GUI interface, using for example Tkinter, to input new customers
