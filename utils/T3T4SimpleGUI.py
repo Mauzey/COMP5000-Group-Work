@@ -1,6 +1,7 @@
 import PySimpleGUI as sg
+import matplotlib.pyplot as plt
+from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import sqlite3
-
 
 def run_window_main():
     layoutNav = [
@@ -140,7 +141,10 @@ def run_window_dashboard():
 
     plot_layout = [
         [
-        sg.Button("Oh Come the Great Histogram!", key='hist')
+            sg.Button("Oh Come the Great Histogram!", key='hist')
+        ],
+        [
+            sg.Canvas(size=(300 * 2, 300), key='plot_canvas', background_color='grey')
         ]
     ]
 
@@ -167,7 +171,8 @@ def run_window_dashboard():
             sg.Column(navigation_section)
         ]
     ]
-    window_dashboard = sg.Window("New Customer", layout_dshb)
+    window_dashboard = sg.Window("New Customer", layout_dshb, force_toplevel=True, finalize=True)
+
     # Create an event loop
     while True:
         event, values = window_dashboard.read()
@@ -213,8 +218,19 @@ def run_window_dashboard():
                 delivery_distance.append(i[0])
 
             del distance_list
-            draw_plot(delivery_distance)
 
+            plt.figure(1)
+            fig = plt.gcf()  # if using Pyplot then get the figure from the plot
+            DPI = fig.get_dpi()
+
+            fig.set_size_inches(304 * 2 / float(DPI), 304 / float(DPI))
+
+            plt.hist(delivery_distance)
+            plt.xlabel("Distance")
+            plt.title("Delivery Distance Histogram")
+            plt.xticks(rotation='vertical')
+
+            draw_plot(fig, window_dashboard['plot_canvas'].TKCanvas)
 
 
     window_dashboard.close()
@@ -234,8 +250,15 @@ def run_sql_command(command):
     return result
 
 
-def draw_plot(numbers):
-    print("Test")
+def draw_plot(figure, canvas):
+    if canvas.children:
+        for child in canvas.winfo_children():
+            child.destroy()
+
+    figure_canvas_agg = FigureCanvasTkAgg(figure, master=canvas)
+    figure_canvas_agg.draw()
+    figure_canvas_agg.get_tk_widget().pack(side='top', fill='both', expand=1)
+
 
 
 # Task 3 (20 marks) Write a GUI interface, using for example Tkinter, to input new customers
@@ -250,3 +273,4 @@ def draw_plot(numbers):
 # MAIN
 dbFile = "../data/delivery-database.db"
 run_window_main()
+
