@@ -4,8 +4,9 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import sqlite3
 import re
 
+
 def run_window_main():
-    layoutNav = [
+    layout_nav = [
         [
             sg.Text("Welcome to Our Very Special GUI!\nHere's where you can go:", size=(350, 2), justification='center')
         ],
@@ -18,7 +19,9 @@ def run_window_main():
         ]
     ]
 
-    window_navigation = sg.Window("Main", layoutNav, size=(350, 200), element_padding=((20, 20), (10, 10)))
+    window_navigation = sg.Window("Main", layout_nav,
+                                  size=(350, 200),
+                                  element_padding=((20, 20), (10, 10)))
 
     while True:
         event, values = window_navigation.read()
@@ -36,10 +39,10 @@ def run_window_main():
 
 
 def email_validation_window():
-    layout = [[sg.Text('The email is incorrect!\nPlease enter correct format:\n****@***.***')],
+    layout = [[sg.Text('The email format should be:\n****@***.***')],
               [sg.OK()]]
 
-    window = sg.Window('Second Form', layout)
+    window = sg.Window('Second Form', layout, font='Calibri 12')
     event, values = window.read()
     window.close()
 
@@ -54,7 +57,7 @@ def run_window_new_customer():
     lan_values = ['EN', 'RU', 'ES', 'FR', 'AR']
     new_customer_section = [
         [
-            sg.Text("Create a New Account")
+            sg.Text("Create a New Account", font='Calibri 14 bold')
         ],
         [
             sg.Text("Name:", size=(15, 1)),
@@ -73,7 +76,7 @@ def run_window_new_customer():
             sg.Combo(values=gender_values, size=(25, 1), key='gender')
         ],
         [
-            sg.Text("Year of Birth:", size=(15, 1)),  # drop-down menu or if-condition to check the age
+            sg.Text("Year of Birth:", size=(15, 1)),  # drop-down menu
             sg.Combo(values=dob_values, size=(25, 1), key='dob')
         ],
         [
@@ -94,9 +97,7 @@ def run_window_new_customer():
     ]
 
     navigation_section = [
-        [
-            sg.Text("Navigation:")
-        ],
+
         [
             sg.Button('Main', size=(6, 2))
         ],
@@ -112,17 +113,18 @@ def run_window_new_customer():
         ]
     ]
 
-    window_new_customer = sg.Window("New Customer", layout_customer)
+    window_new_customer = sg.Window("New Customer", layout_customer,
+                                    element_padding=((5, 5), (5, 5)))
 
-    # Create an event loop
+    # Event loop
     while True:
         event, values = window_new_customer.read()
 
         if event == 'Add':
 
-            email_valid = re.search('.*@.*(\.).+', values['email'])
+            email_valid = re.search(".*@.*(\.).+", values['email'])
             if email_valid:
-                print("Adding the following values to the 'customers' table:\n", values)
+                # print("Adding the following values to the 'customers' table:\n", values)
                 sql_command = f"""
                                         INSERT INTO customers (akeed_customer_id, gender, 
                                                             dob, status, verified, language, 
@@ -150,9 +152,7 @@ def run_window_new_customer():
 def run_window_dashboard():
 
     navigation_section = [
-        [
-            sg.Text("Navigation:")
-        ],
+
         [
             sg.Button('Main', size=(6, 2))
         ],
@@ -163,14 +163,18 @@ def run_window_dashboard():
 
     plot_layout = [
         [
-            sg.Button("Oh Come the Great Histogram!", key='hist')
+            sg.Button('Plot The Histogram', key='hist',
+                      tooltip='The graph changes its colors each time this button is pressed')
         ],
         [
-            sg.Canvas(size=(300 * 2, 300), key='plot_canvas', background_color='grey')
+            sg.Canvas(size=(300 * 2, 400), key='plot_canvas', background_color='lightgrey')
         ]
     ]
 
     dashboard_section = [
+        [
+            sg.Text("Welcome to the Dashboard!", font='Calibri 14 bold')
+        ],
         [
             # • Print the mean ’item count’ (number of items per order)
             sg.Button("Mean Item Count", key='mean_num', size=(20,1), tooltip="Average Number of Items Per Order"),
@@ -183,7 +187,7 @@ def run_window_dashboard():
         ],
         [
             # • Plot a histogram of the ’delivery distance’
-            sg.Frame("Here the Greatest Histogram of The Century Shall Be Displayed:", plot_layout)
+            sg.Frame('Delivery Distance Histogram', plot_layout)
         ]
     ]
 
@@ -193,7 +197,9 @@ def run_window_dashboard():
             sg.Column(navigation_section)
         ]
     ]
-    window_dashboard = sg.Window("New Customer", layout_dshb, force_toplevel=True, finalize=True)
+    window_dashboard = sg.Window("Dashboard", layout_dshb,
+                                 size=(750, 600),
+                                 element_padding=((5, 5), (5, 5)))
 
     # Create an event loop
     while True:
@@ -227,6 +233,7 @@ def run_window_dashboard():
             window_dashboard['mean_cost_out'].update(round(number[0][0], 3))
 
         elif event == 'hist':
+
             sql_command = """
                 SELECT delivery_distance 
                 FROM orders;
@@ -235,22 +242,24 @@ def run_window_dashboard():
             del sql_command
 
             delivery_distance = []
-
             for i in distance_list:
                 delivery_distance.append(i[0])
-
             del distance_list
 
-            plt.figure(1)
-            fig = plt.gcf()  # if using Pyplot then get the figure from the plot
-            DPI = fig.get_dpi()
-
-            fig.set_size_inches(304 * 2 / float(DPI), 304 / float(DPI))
-
+            plt.style.use('seaborn-pastel')
             plt.hist(delivery_distance)
             plt.xlabel("Distance")
             plt.title("Delivery Distance Histogram")
             plt.xticks(rotation='vertical')
+            plt.tight_layout()
+
+            # putting the plot in the canvas
+            # source: https://github.com/PySimpleGUI/PySimpleGUI/blob/master/DemoPrograms/Demo_Matplotlib_Embedded_Toolbar.py
+            fig = plt.gcf()  # if using Pyplot then get the figure from the plot
+            DPI = fig.get_dpi()
+
+            # fixing the size of the plot to make sure it doesn't expand drastically and fits the canvas
+            fig.set_size_inches(304 * 2 / float(DPI), 404 / float(DPI))
 
             draw_plot(fig, window_dashboard['plot_canvas'].TKCanvas)
 
@@ -279,9 +288,10 @@ def draw_plot(figure, canvas):
 
     figure_canvas_agg = FigureCanvasTkAgg(figure, master=canvas)
     figure_canvas_agg.draw()
-    figure_canvas_agg.get_tk_widget().pack(side='top', fill='both', expand=1)
-
+    figure_canvas_agg.get_tk_widget().pack(side='bottom', fill='both', expand=1, pady=1, padx=1)
 
 # MAIN
 dbFile = "../data/delivery-database.db"
+sg.theme('TealMono')
+sg.set_options(font="Calibri 12", tooltip_font="Calibri 10 italic")
 run_window_main()
