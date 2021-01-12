@@ -2,6 +2,7 @@ import PySimpleGUI as sg
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import sqlite3
+import re
 
 def run_window_main():
     layoutNav = [
@@ -34,45 +35,61 @@ def run_window_main():
     window_navigation.close()
 
 
+def email_validation_window():
+    layout = [[sg.Text('The email is incorrect!\nPlease enter correct format:\n****@***.***')],
+              [sg.OK()]]
+
+    window = sg.Window('Second Form', layout)
+    event, values = window.read()
+    window.close()
+
+
 def run_window_new_customer():
+
+    gender_values = ['Male', 'Female', 'Other']
+    dob_values = []
+    for i in range(1925, 2005):
+        dob_values.append(i)
+
+    lan_values = ['EN', 'RU', 'ES', 'FR', 'AR']
     new_customer_section = [
         [
             sg.Text("Create a New Account")
         ],
         [
-            sg.Text("Name:", size=(10, 1)),
+            sg.Text("Name:", size=(15, 1)),
             sg.In(size=(25, 1))
         ],
         [
-            sg.Text("Surname:", size=(10, 1)),
+            sg.Text("Surname:", size=(15, 1)),
             sg.In(size=(25, 1))
         ],
         [
-            sg.Text("Email:", size=(10, 1)),  # validate the email
+            sg.Text("Email:", size=(15, 1)),  # validate the email
+            sg.Input(tooltip="Email should have format ****@***.***", size=(25, 1), key='email')
+        ],
+        [
+            sg.Text("Gender:", size=(15, 1)),  # drop-down menu
+            sg.Combo(values=gender_values, size=(25, 1), key='gender')
+        ],
+        [
+            sg.Text("Year of Birth:", size=(15, 1)),  # drop-down menu or if-condition to check the age
+            sg.Combo(values=dob_values, size=(25, 1), key='dob')
+        ],
+        [
+            sg.Text("Language:", size=(15, 1)),  # drop-down menu
+            sg.Combo(values=lan_values, size=(25, 1), key='lan')
+        ],
+        [
+            sg.Text("Delivery Address:", size=(15, 1)),
             sg.In(size=(25, 1))
         ],
         [
-            sg.Text("Gender:", size=(10, 1)),  # drop-down menu
-            sg.In(size=(25, 1), key='gender')
-        ],
-        [
-            sg.Text("Year of Birth:", size=(10, 1)),  # drop-down menu or if-condition to check the age
-            sg.In(size=(25, 1), key='dob')
-        ],
-        [
-            sg.Text("Language:", size=(10, 1)),  # drop-down menu
-            sg.In(size=(25, 1), key='lan')
-        ],
-        [
-            sg.Text("Delivery Address:", size=(10, 1)),
+            sg.Text("Postal Code:", size=(15, 1)),
             sg.In(size=(25, 1))
         ],
         [
-            sg.Text("Postal Code:", size=(10, 1)),
-            sg.In(size=(25, 1))
-        ],
-        [
-            sg.Button('Add', size=(10, 1))
+            sg.Button('Add', size=(15, 1))
         ]
     ]
 
@@ -102,19 +119,24 @@ def run_window_new_customer():
         event, values = window_new_customer.read()
 
         if event == 'Add':
-            print("Adding the following values to the 'customers' table:\n", values)
-            sql_command = f"""
-                        INSERT INTO customers (akeed_customer_id, gender, 
-                                            dob, status, verified, language, 
-                                            created_at, updated_at)
-                        VALUES ('test123', NULLIF('{values['gender']}', ''), 
-                            NULLIF('{values['dob']}', ''), 0, 0, NULLIF('{values['lan']}', ''), 
-                            datetime('now', 'localtime'), datetime('now', 'localtime')
-                            );
-                        """
 
-            run_sql_command(sql_command)
-            del sql_command
+            email_valid = re.search('.*@.*(\.).+', values['email'])
+            if email_valid:
+                print("Adding the following values to the 'customers' table:\n", values)
+                sql_command = f"""
+                                        INSERT INTO customers (akeed_customer_id, gender, 
+                                                            dob, status, verified, language, 
+                                                            created_at, updated_at)
+                                        VALUES ('test12/01/2021', NULLIF('{values['gender']}', ''), 
+                                            NULLIF('{values['dob']}', ''), 0, 0, NULLIF('{values['lan']}', ''), 
+                                            datetime('now', 'localtime'), datetime('now', 'localtime')
+                                            );
+                                        """
+
+                run_sql_command(sql_command)
+                del sql_command
+            else:
+                email_validation_window()
 
         elif event in (None, 'Quit'):
             break
@@ -260,17 +282,6 @@ def draw_plot(figure, canvas):
     figure_canvas_agg.get_tk_widget().pack(side='top', fill='both', expand=1)
 
 
-
-# Task 3 (20 marks) Write a GUI interface, using for example Tkinter, to input new customers
-# to the database. Provide screen-shots of the software being used.
-# Task 4 (25 marks) Use Tkinter or another python system to provide a simple GUI dashboard.
-# Clicking on buttons should provide the following information from the SQLite database
-# via SQL.
-# • Print the mean ’item count’ (number of items per order)
-# • Print the mean ’grand total’ (cost of the order)
-# • Plot a histogram of the ’deliverydistance’.
-
 # MAIN
 dbFile = "../data/delivery-database.db"
 run_window_main()
-
