@@ -1,4 +1,4 @@
-,gender,dob,status,verified,language,created_at,updated_at,customer_id
+,gender,birth_year,status,verified,language,created_at,updated_at,customer_id
 0,Male,,1,1,EN,2018-02-07 19:16:23,2018-02-07 19:16:23,0
 1,Male,,1,1,EN,2018-02-09 12:04:42,2018-02-09 12:04:41,1
 2,Male,,0,1,EN,2018-03-14 18:31:43,2018-03-14 18:31:42,2

@@ -217,6 +217,43 @@ vendor_ratings_df = vendor_ratings_df.dropna(subset=['rating']).reset_index(drop
 orders_df = orders_df.drop(['vendor_rating'], axis=1)
 
 
+# convert columns from float to int ###
+# --------------------------------- ###
+
+locations_df['customer_id'] = locations_df['customer_id'].astype(int)
+vendors_df['authentication_id'] = vendors_df['authentication_id'].astype(int)
+orders_df['item_count'] = orders_df['item_count'].astype(int)
+orders_df['customer_id'] = orders_df['customer_id'].astype(int)
+vendor_ratings_df['customer_id'] = vendor_ratings_df['customer_id'].astype(int)
+customer_fav_vendors_df['customer_id'] = customer_fav_vendors_df['customer_id'].astype(int)
+
+
+# rename columns ###
+# -------------- ###
+customers_df = customers_df.rename(columns={
+    'dob': 'birth_year'
+})
+vendors_df = vendors_df.rename(columns={
+    'authentication_id': 'auth_id', 'delivery_charge': 'delivery_fee', 'serving_distance': 'max_serving_dist',
+    'OpeningTime': 'opening_time', 'OpeningTime2': 'opening_time_2', 'prepration_time': 'preparation_time',
+    'vendor_rating': 'avg_rating'
+})
+orders_df = orders_df.rename(columns={
+    'item_count': 'n_items', 'grand_total': 'price_due', 'payment_mode': 'payment_method',
+    'deliverydistance': 'delivery_distance', 'preparationtime': 'preparation_time'
+})
+
+
+# drop columns ###
+# ------------ ###
+vendors_df = vendors_df.drop([
+    'is_open', 'open_close_flags', 'country_id', 'city_id', 'display_orders'
+], axis=1)
+orders_df = orders_df.drop([
+    'vendor_discount_amount', 'driver_rating', 'CID X LOC_NUM X VENDOR'
+], axis=1)
+
+
 # export data
 customers_df.to_csv("../data/customers.csv")
 vendors_df.to_csv("../data/vendors.csv")
