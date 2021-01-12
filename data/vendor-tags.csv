@@ -1,0 +1,526 @@
+,vendor_id,tag
+0,0,Arabic
+1,0,Breakfast
+2,0,Burgers
+3,0,Desserts
+4,0,Free Delivery
+5,0,Grills
+6,0,Lebanese
+7,0,Salads
+8,0,Sandwiches
+9,0,Shawarma
+10,1,Breakfast
+11,1,Cakes
+12,1,Crepes
+13,1,Italian
+14,1,Pasta
+15,1,Pizzas
+16,1,Salads
+17,1,Sandwiches
+18,1,Soups
+19,2,Breakfast
+20,2,Desserts
+21,2,Free Delivery
+22,2,Indian
+23,3,Burgers
+24,3,Desserts
+25,3,Fries
+26,3,Salads
+27,4,Burgers
+28,5,Desserts
+29,5,Mexican
+30,6,American
+31,6,Burgers
+32,6,Fries
+33,6,Sandwiches
+34,7,American
+35,7,Burgers
+36,7,Fries
+37,7,Sandwiches
+38,8,Breakfast
+39,8,Desserts
+40,8,Grills
+41,8,Milkshakes
+42,8,Salads
+43,8,Sandwiches
+44,8,Soups
+45,9,Breakfast
+46,9,Burgers
+47,9,Desserts
+48,9,Indian
+49,9,Salads
+50,10,Breakfast
+51,10,Desserts
+52,10,Grills
+53,10,Milkshakes
+54,10,Salads
+55,10,Sandwiches
+56,10,Soups
+57,11,Asian
+58,11,Desserts
+59,11,Healthy Food
+60,11,Japanese
+61,11,Salads
+62,11,Sushi
+63,12,Sandwiches
+64,12,Breakfast
+65,12,Burgers
+66,12,Mojitos
+67,13,Pizzas
+68,13,Italian
+69,13,Breakfast
+70,13,Soups
+71,13,Pasta
+72,13,Salads
+73,13,Desserts
+74,14,Burgers
+75,14,Desserts
+76,14,Free Delivery
+77,14,Pasta
+78,14,Sandwiches
+79,15,Arabic
+80,15,Breakfast
+81,15,Desserts
+82,15,Mandazi
+83,15,Omani
+84,15,Salads
+85,15,Sandwiches
+86,16,Breakfast
+87,16,Desserts
+88,16,Lebanese
+89,16,Manakeesh
+90,16,Pizzas
+91,16,Salads
+92,16,Sandwiches
+93,17,Breakfast
+94,17,Desserts
+95,17,Salads
+96,17,Arabic
+97,18,Burgers
+98,18,Fries
+99,18,Kids meal
+100,18,Shawarma
+101,19,Desserts
+102,19,Omani
+103,20,Cakes
+104,20,Crepes
+105,20,Desserts
+106,20,Donuts
+107,20,Fresh Juices
+108,20,Ice creams
+109,20,Milkshakes
+110,20,Pancakes
+111,20,Waffles
+112,21,American
+113,21,Burgers
+114,21,Desserts
+115,21,Mojitos 
+116,21,Pasta
+117,22,Asian
+118,22,Fresh Juices
+119,22,Kids meal
+120,23,American
+121,23,Burgers
+122,23,Free Delivery
+123,23,Hot Dogs
+124,23,Pasta
+125,24,American
+126,24,Burgers
+127,24,Free Delivery
+128,24,Hot Dogs
+129,24,Pasta
+130,25,American
+131,25,Burgers
+132,25,Free Delivery
+133,25,Hot Dogs
+134,25,Pasta
+135,26,Asian
+136,26,Dimsum
+137,26,Grills
+138,26,Japanese
+139,26,Rice
+140,26,Soups
+141,27,Arabic
+142,27,Desserts
+143,27,Free Delivery
+144,27,Indian
+145,28,Desserts
+146,28,Free Delivery
+147,28,Healthy Food
+148,28,Sweets
+149,29,Burgers
+150,29,Healthy Food
+151,29,Milkshakes
+152,29,Sandwiches
+153,29,Steaks
+154,30,Arabic
+155,30,Pizzas
+156,30,Sandwiches
+157,31,Breakfast
+158,31,Burgers
+159,31,Grills
+160,31,Pizza
+161,31,Sandwiches
+162,31,Shawarma
+163,32,Arabic
+164,33,American
+165,33,Burgers
+166,33,Mishkak
+167,33,Salads
+168,33,Sandwiches
+169,34,Biryani
+170,34,Desserts
+171,34,Indian
+172,34,Rice
+173,34,Thali
+174,34,Vegetarian
+175,35,American
+176,35,Burgers
+177,35,Sandwiches
+178,36,American
+179,36,Burgers
+180,36,Kids meal
+181,36,Sandwiches
+182,37,Burgers
+183,37,Desserts
+184,37,Pastry
+185,37,Pizzas
+186,38,Breakfast
+187,38,Desserts
+188,38,Grills
+189,38,Milkshakes
+190,38,Salads
+191,38,Sandwiches
+192,38,Soups
+193,39,Arabic
+194,39,Grills
+195,39,Indian
+196,39,Pasta
+197,39,Salads
+198,39,Seafood
+199,39,Soups
+200,39,Sweets
+201,40,Italian
+202,40,Pasta
+203,40,Pizzas
+204,40,Salads
+205,40,Sandwiches
+206,41,Sandwiches
+207,41,Shawarma
+208,41,Fresh Juices
+209,41,Mojitos
+210,41,Milkshakes
+211,42,Fresh Juices
+212,42,Milkshakes
+213,42,Mojitos 
+214,42,Sandwiches
+215,42,Shawarma
+216,43,Fresh Juices
+217,43,Milkshakes
+218,43,Mojitos 
+219,43,Sandwiches
+220,43,Shawarma
+221,44,Arabic
+222,44,Burgers
+223,44,Sandwiches
+224,44,Shawarma
+225,44,Grills
+226,44,Pizzas
+227,44,Desserts
+228,45,Burgers
+229,45,Fries
+230,45,Grills
+231,45,Mishkak
+232,45,Mojitos 
+233,45,Sandwiches
+234,45,Sweets
+235,46,
+236,47,Free Delivery
+237,47,Mexican
+238,47,Salads
+239,48,Cakes
+240,48,Crepes
+241,48,Desserts
+242,48,Donuts
+243,48,Fresh Juices
+244,48,Ice creams
+245,48,Milkshakes
+246,48,Mojitos 
+247,48,Pancakes
+248,48,Waffles
+249,49,Biryani
+250,49,Desserts
+251,49,Indian
+252,49,Soups
+253,50,American
+254,50,Sandwiches
+255,50,Hot Dogs
+256,50,Fries
+257,51,Arabic
+258,51,Biryani
+259,51,Chinese
+260,51,Grills
+261,51,Indian
+262,51,Rice
+263,51,Salads
+264,51,Soups
+265,51,Thai
+266,52,Coffee
+267,52,Organic
+268,53,Fresh Juices
+269,53,Healthy Food
+270,53,Smoothies
+271,54,Breakfast
+272,54,Free Delivery
+273,54,Fresh Juices
+274,54,Fries
+275,54,Karak
+276,54,Mojitos 
+277,54,Rolls
+278,55,
+279,56,American
+280,56,Burgers
+281,56,Desserts
+282,56,Donuts
+283,56,Fries
+284,56,Pasta
+285,56,Salads
+286,56,Sandwiches
+287,57,
+288,58,American
+289,58,Breakfast
+290,58,Rolls
+291,58,Salads
+292,58,Sandwiches
+293,59,American
+294,59,Burgers
+295,59,Kids meal
+296,59,Pasta
+297,59,Sandwiches
+298,59,Smoothies
+299,59,Soups
+300,59,Steaks
+301,60,Desserts
+302,60,Free Delivery
+303,60,Fresh Juices
+304,60,Healthy Food
+305,60,Ice creams
+306,60,Milkshakes
+307,60,Mojitos 
+308,61,American
+309,61,Burgers
+310,61,Kids meal
+311,61,Pasta
+312,61,Sandwiches
+313,61,Smoothies
+314,61,Soups
+315,61,Steaks
+316,62,Cakes
+317,62,Donuts
+318,63,Asian
+319,63,Desserts
+320,63,Rice
+321,63,Salads
+322,63,Soups
+323,63,Thai
+324,64,American
+325,64,Burgers
+326,64,Fries
+327,64,Mojitos 
+328,65,Burgers
+329,65,Desserts
+330,65,Free Delivery
+331,65,Grills
+332,65,Mexican
+333,66,Coffee
+334,66,Fresh Juices
+335,66,Hot Chocolate
+336,66,Sandwiches
+337,66,Smoothies
+338,67,Free Delivery
+339,67,Fresh Juices
+340,67,Pastas
+341,67,Salads
+342,67,Sandwiches
+343,68,Combos
+344,68,Fries
+345,68,Mojitos 
+346,68,Pasta
+347,68,Sandwiches
+348,69,Coffee
+349,69,Fresh Juices
+350,69,Hot Chocolate
+351,69,Sandwiches
+352,69,Smoothies
+353,70,Coffee
+354,70,Fresh Juices
+355,70,Hot Chocolate
+356,70,Sandwiches
+357,70,Smoothies
+358,71,American
+359,71,Breakfast
+360,71,Burgers
+361,71,Fries
+362,71,Sandwiches
+363,72,Bagels
+364,72,Desserts
+365,72,Salads
+366,73,American
+367,73,Kids meal
+368,73,Pasta
+369,73,Pizzas
+370,73,Salads
+371,74,Churros
+372,75,American
+373,75,Breakfast
+374,75,Burgers
+375,75,Desserts
+376,75,Italian
+377,75,Salads
+378,75,Sandwiches
+379,75,Soups
+380,75,Steaks
+381,76,Omani
+382,76,Arabic
+383,76,Shuwa
+384,76,Pasta
+385,76,Rice
+386,76,Soups
+387,76,Lebanese
+388,77,Frozen yoghurt
+389,77,Smoothies
+390,78,Arabic
+391,78,Kushari
+392,78,Sandwiches
+393,79,Burgers
+394,79,Free Delivery
+395,79,Milkshakes
+396,79,Mojitos 
+397,80,American
+398,80,Burgers
+399,80,Desserts
+400,80,Free Delivery
+401,80,Fries
+402,80,Hot Dogs
+403,80,Kids meal
+404,81,Fresh Juices
+405,81,Lebanese
+406,81,Sandwiches
+407,81,Shawarma
+408,82,Burgers
+409,82,Desserts
+410,82,Free Delivery
+411,82,Pasta
+412,82,Sandwiches
+413,83,Coffee
+414,83,Pancakes
+415,83,Spanish Latte
+416,83,Waffles
+417,84,Burgers
+418,84,Desserts
+419,84,Family Meal
+420,84,Salads
+421,85,Fresh Juices
+422,85,Sandwiches
+423,85,Shawarma
+424,86,Fresh Juices
+425,86,Sandwiches
+426,86,Shawarma
+427,87,Fresh Juices
+428,87,Sandwiches
+429,87,Shawarma
+430,88,Biryani
+431,88,Desserts
+432,88,Indian
+433,88,Kebabs
+434,88,Rice
+435,89,Biryani
+436,89,Desserts
+437,89,Indian
+438,89,Kebabs
+439,89,Rice
+440,90,Biryani
+441,90,Desserts
+442,90,Indian
+443,90,Kebabs
+444,90,Rice
+445,91,American
+446,91,Breakfast
+447,91,Burgers
+448,91,Cafe
+449,91,Desserts
+450,91,Free Delivery
+451,91,Fries
+452,91,Ice creams
+453,91,Kids meal
+454,91,Salads
+455,92,American
+456,92,Breakfast
+457,92,Burgers
+458,92,Cafe
+459,92,Desserts
+460,92,Free Delivery
+461,92,Fries
+462,92,Ice creams
+463,92,Kids meal
+464,92,Salads
+465,93,American
+466,93,Breakfast
+467,93,Burgers
+468,93,Cafe
+469,93,Desserts
+470,93,Free Delivery
+471,93,Fries
+472,93,Ice creams
+473,93,Kids meal
+474,93,Salads
+475,94,American
+476,94,Breakfast
+477,94,Burgers
+478,94,Cafe
+479,94,Desserts
+480,94,Free Delivery
+481,94,Fries
+482,94,Ice creams
+483,94,Kids meal
+484,94,Salads
+485,95,American
+486,95,Breakfast
+487,95,Burgers
+488,95,Cafe
+489,95,Desserts
+490,95,Free Delivery
+491,95,Fries
+492,95,Ice creams
+493,95,Kids meal
+494,95,Salads
+495,96,American
+496,96,Burgers
+497,96,Desserts
+498,96,Free Delivery
+499,96,Fries
+500,96,Kids meal
+501,96,Salads
+502,97,American
+503,97,Breakfast
+504,97,Burgers
+505,97,Cafe
+506,97,Desserts
+507,97,Free Delivery
+508,97,Fries
+509,97,Ice creams
+510,97,Kids meal
+511,97,Salads
+512,98,American
+513,98,Breakfast
+514,98,Burgers
+515,98,Cafe
+516,98,Desserts
+517,98,Free Delivery
+518,98,Fries
+519,98,Ice creams
+520,98,Kids meal
+521,98,Salads
+522,99,Fatayers
+523,99,Mojitos 
+524,99,Sandwiches

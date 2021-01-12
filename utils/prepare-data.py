@@ -3,10 +3,10 @@ import numpy as np
 import pandas as pd
 
 # import data
-customers_df = pd.read_csv("../data/customers.csv")
-vendors_df = pd.read_csv("../data/vendors.csv")
-locations_df = pd.read_csv("../data/locations.csv")
-orders_df = pd.read_csv("../data/orders.csv")
+customers_df = pd.read_csv("../data/raw/customers.csv")
+vendors_df = pd.read_csv("../data/raw/vendors.csv")
+locations_df = pd.read_csv("../data/raw/locations.csv")
+orders_df = pd.read_csv("../data/raw/orders.csv")
 
 
 # data cleaning ###
@@ -217,10 +217,14 @@ vendor_ratings_df = vendor_ratings_df.dropna(subset=['rating']).reset_index(drop
 orders_df = orders_df.drop(['vendor_rating'], axis=1)
 
 
+# export data
+customers_df.to_csv("../data/customers.csv")
+vendors_df.to_csv("../data/vendors.csv")
+locations_df.to_csv("../data/locations.csv")
+orders_df.to_csv("../data/orders.csv")
 
-
-
-
-
-
-
+vendor_cats_df.to_csv("../data/vendor-categories.csv")
+vendor_tags_df.to_csv("../data/vendor-tags.csv")
+customer_fav_vendors_df.to_csv("../data/customer-fav-vendors.csv")
+promo_codes_df.to_csv("../data/promo-codes.csv")
+vendor_ratings_df.to_csv("../data/vendor-ratings.csv")
