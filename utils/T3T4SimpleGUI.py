@@ -5,10 +5,37 @@ import sqlite3
 import re
 
 
+def run_sql_command(command):
+    global dbFile
+    # the dbFile variable is defined in the main body of the program only once,
+    # beyond the scope of other functions
+
+    connection = sqlite3.connect(dbFile)
+    cursor = connection.cursor()
+    cursor.execute(command)
+    result = cursor.fetchall()
+
+    connection.commit()
+    connection.close()
+
+    return result
+
+
+def draw_plot(figure, canvas):
+    if canvas.children:
+        for child in canvas.winfo_children():
+            child.destroy()
+
+    figure_canvas_agg = FigureCanvasTkAgg(figure, master=canvas)
+    figure_canvas_agg.draw()
+    figure_canvas_agg.get_tk_widget().pack(side='bottom', fill='both', expand=1, pady=1, padx=1)
+
+
 def run_window_main():
-    layout_nav = [
+    layoutNav = [
         [
-            sg.Text("Welcome to Our Very Special GUI!\nHere's where you can go:", size=(350, 2), justification='center')
+            sg.Text("Welcome to Our Very Special GUI!\nHere's where you can go:", size=(350, 2),
+                    justification='center')
         ],
         [
             sg.Button("New Customer", size=(15, 2)),
@@ -19,42 +46,54 @@ def run_window_main():
         ]
     ]
 
-    window_navigation = sg.Window("Main", layout_nav,
-                                  size=(350, 200),
-                                  element_padding=((20, 20), (10, 10)))
+    # new layout needs to be specified each time a window is created, the same layout cannot be reused by
+    # different windows as per PySimpleGUI principles, hence we had to put it in a function
 
+    window_navigation = sg.Window("Main", layoutNav, size=(350, 200), element_padding=((20, 20), (10, 10)))
+
+    # event loop for the window
     while True:
+
+        # 'values' represent the input values in the input fields
         event, values = window_navigation.read()
+
+        # in our case event names represent the buttons names,
+        # however it can be specific keys assigned to certain elements of a window if it can trigger an event
         if event == "New Customer":
             window_navigation.close()
-            run_window_new_customer()
+            run_window_new_customer()  # launching a function which opens the window for Task 3 - new customer
 
         elif event == 'Dashboard':
             window_navigation.close()
-            run_window_dashboard()
+            run_window_dashboard()  # launching a function which opens the window for Task 4 - dashboard
 
+        # in case the user presses the 'Quit' button or the red 'close' button on the top of the window
         elif event in (None, 'Quit'):
             break
     window_navigation.close()
 
 
 def email_validation_window():
-    layout = [[sg.Text('The email format should be:\n****@***.***')],
+    layout = [[sg.Text('ERROR:\nThe email format should be:\n****@***.***')],
               [sg.OK()]]
 
-    window = sg.Window('Second Form', layout, font='Calibri 12')
+    window = sg.Window('Email Format Error', layout)
     event, values = window.read()
     window.close()
 
 
 def run_window_new_customer():
 
+    # gender_values, dob_values and lan_values are to be displayed in drop-down menus (element 'Combo')
     gender_values = ['Male', 'Female', 'Other']
+
     dob_values = []
     for i in range(1925, 2005):
         dob_values.append(i)
 
     lan_values = ['EN', 'RU', 'ES', 'FR', 'AR']
+
+    # creating new layouts for our window
     new_customer_section = [
         [
             sg.Text("Create a New Account", font='Calibri 14 bold')
@@ -122,11 +161,10 @@ def run_window_new_customer():
 
         if event == 'Add':
 
-            email_valid = re.search(".*@.*(\.).+", values['email'])
+            email_valid = re.search(".*@.*(\.).+", values['email']) #validating the entered email address
             if email_valid:
                 # print("Adding the following values to the 'customers' table:\n", values)
-                sql_command = f"""
-                                        INSERT INTO customers (akeed_customer_id, gender, 
+                sql_command = f"""      INSERT INTO customers (akeed_customer_id, gender, 
                                                             dob, status, verified, language, 
                                                             created_at, updated_at)
                                         VALUES ('test12/01/2021', NULLIF('{values['gender']}', ''), 
@@ -138,11 +176,12 @@ def run_window_new_customer():
                 run_sql_command(sql_command)
                 del sql_command
             else:
-                email_validation_window()
+                email_validation_window() #displaying a warning window for incorrect email
 
         elif event in (None, 'Quit'):
             break
         elif event == 'Main':
+            # closing the current window without submitting anything and switching back to Main
             window_new_customer.close()
             run_window_main()
 
@@ -167,6 +206,7 @@ def run_window_dashboard():
                       tooltip='The graph changes its colors each time this button is pressed')
         ],
         [
+            # the Canvas section is visible before displaying the plot there, as soon as the window is run
             sg.Canvas(size=(300 * 2, 400), key='plot_canvas', background_color='lightgrey')
         ]
     ]
@@ -176,17 +216,17 @@ def run_window_dashboard():
             sg.Text("Welcome to the Dashboard!", font='Calibri 14 bold')
         ],
         [
-            # • Print the mean ’item count’ (number of items per order)
+            # Print the mean ’item count’ (number of items per order)
             sg.Button("Mean Item Count", key='mean_num', size=(20,1), tooltip="Average Number of Items Per Order"),
             sg.Text(size=(20, 1), key='mean_num_out')
         ],
         [
-            # • Print the mean ’grand total’ (cost of the order)
+            # Print the mean ’grand total’ (cost of the order)
             sg.Button("Mean Grand Total", key='mean_cost', size=(20,1), tooltip="Average Cost Of an Order"),
             sg.Text(size=(20, 1), key='mean_cost_out')
         ],
         [
-            # • Plot a histogram of the ’delivery distance’
+            # Plot a histogram of the ’delivery distance’
             sg.Frame('Delivery Distance Histogram', plot_layout)
         ]
     ]
@@ -246,8 +286,8 @@ def run_window_dashboard():
                 delivery_distance.append(i[0])
             del distance_list
 
-            plt.style.use('seaborn-pastel')
-            plt.hist(delivery_distance)
+            # plt.style.use('seaborn-pastel')
+            plt.hist(delivery_distance, bins=range(15))
             plt.xlabel("Distance")
             plt.title("Delivery Distance Histogram")
             plt.xticks(rotation='vertical')
@@ -263,35 +303,14 @@ def run_window_dashboard():
 
             draw_plot(fig, window_dashboard['plot_canvas'].TKCanvas)
 
-
     window_dashboard.close()
 
 
-def run_sql_command(command):
-    global dbFile
-
-    connection = sqlite3.connect(dbFile)
-    cursor = connection.cursor()
-    cursor.execute(command)
-    result = cursor.fetchall()
-
-    connection.commit()
-    connection.close()
-
-    return result
-
-
-def draw_plot(figure, canvas):
-    if canvas.children:
-        for child in canvas.winfo_children():
-            child.destroy()
-
-    figure_canvas_agg = FigureCanvasTkAgg(figure, master=canvas)
-    figure_canvas_agg.draw()
-    figure_canvas_agg.get_tk_widget().pack(side='bottom', fill='both', expand=1, pady=1, padx=1)
-
 # MAIN
 dbFile = "../data/delivery-database.db"
-sg.theme('TealMono')
+
+# setting window theme and fonts before launching the first window
+sg.theme('LightBlue3')
 sg.set_options(font="Calibri 12", tooltip_font="Calibri 10 italic")
+
 run_window_main()
