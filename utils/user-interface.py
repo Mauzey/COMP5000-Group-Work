@@ -209,13 +209,14 @@ def run_window_new_customer():
 
         if event == 'Add':
 
-            email_valid = re.search(".*@.*(\.).+", values['email']) #validating the entered email address
+            email_valid = re.search(".*@.*(\.).+", values['email'])  # validating the entered email address
             if email_valid:
                 # print("Adding the following values to the 'customers' table:\n", values)
-                sql_command = f"""      INSERT INTO customers (akeed_customer_id, gender, 
-                                                            dob, status, verified, language, 
-                                                            created_at, updated_at)
-                                        VALUES ('test12/01/2021', NULLIF('{values['gender']}', ''), 
+                sql_command = f"""      INSERT INTO customers (gender, birth_year, 
+                                                                status, verified, 
+                                                                language, created_at, 
+                                                                updated_at)
+                                        VALUES (NULLIF('{values['gender']}', ''), 
                                             NULLIF('{values['dob']}', ''), 0, 0, NULLIF('{values['lan']}', ''), 
                                             datetime('now', 'localtime'), datetime('now', 'localtime')
                                             );
@@ -263,7 +264,7 @@ def run_window_dashboard():
     plot_layout = [
         [
             sg.Button('Plot The Histogram', key='hist',
-                      tooltip='The graph changes its colors each time this button is pressed')
+                      tooltip='The plot changes its colors each time this button is pressed')
         ],
         [
             # the Canvas section is visible before displaying the plot there, as soon as the window is run
@@ -314,7 +315,7 @@ def run_window_dashboard():
 
         elif event == 'mean_num':
             sql_command = """
-                SELECT AVG(item_count) 
+                SELECT AVG(n_items) 
                 FROM orders;
             """
             number = run_sql_command(sql_command)
@@ -324,7 +325,7 @@ def run_window_dashboard():
 
         elif event == 'mean_cost':
             sql_command = """
-                SELECT AVG(grand_total) 
+                SELECT AVG(price_due) 
                 FROM orders;
             """
             number = run_sql_command(sql_command)
@@ -354,7 +355,8 @@ def run_window_dashboard():
             plt.tight_layout()
 
             # putting the plot in the canvas
-            # source: https://github.com/PySimpleGUI/PySimpleGUI/blob/master/DemoPrograms/Demo_Matplotlib_Embedded_Toolbar.py
+            # source:
+            # https://github.com/PySimpleGUI/PySimpleGUI/blob/master/DemoPrograms/Demo_Matplotlib_Embedded_Toolbar.py
             fig = plt.gcf()  # if using Pyplot then get the figure from the plot
             DPI = fig.get_dpi()
 
@@ -367,7 +369,7 @@ def run_window_dashboard():
 
 
 # MAIN
-dbFile = "../data/delivery-database.db"
+dbFile = "../delivery-database.db"
 
 # setting window theme and fonts before launching the first window
 sg.theme('LightBlue3')

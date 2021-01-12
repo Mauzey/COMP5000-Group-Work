@@ -26,7 +26,7 @@ cursor = connection.cursor()
 cursor.execute(
     """
     CREATE TABLE customers (
-        id INT PRIMARY KEY NOT NULL,
+        id integer PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
         gender VARCHAR(200),
         birth_year VARCHAR(200),
         status VARCHAR(200),
