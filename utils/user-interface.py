@@ -6,6 +6,17 @@ import re
 
 
 def run_sql_command(command):
+    """This function runs the provided SQL command with the help of sqlite3
+
+    :param command : <class 'str'>
+        the string with the sql command which is to be executed
+
+    :return result: <class 'list'>
+        the resulting list of values after running the sql operation on the database
+        (or empty value if the sql command isn't supposed to return any value
+        and/or simply does some operations on a database)
+    """
+
     global dbFile
     # the dbFile variable is defined in the main body of the program only once,
     # beyond the scope of other functions
@@ -22,6 +33,15 @@ def run_sql_command(command):
 
 
 def draw_plot(figure, canvas):
+    """
+    This function fills the provided canvas object with the provided plot figure.
+
+    :param figure: <class 'matplotlib.figure.Figure'>
+        the figure that holds the plot to be displayed in the canvas
+    :param canvas: <class 'type'>
+        canvas object in PySimpleGUI which will hold the provided figure (plot)
+    """
+
     if canvas.children:
         for child in canvas.winfo_children():
             child.destroy()
@@ -31,7 +51,36 @@ def draw_plot(figure, canvas):
     figure_canvas_agg.get_tk_widget().pack(side='bottom', fill='both', expand=1, pady=1, padx=1)
 
 
+def email_validation_window():
+    """
+    This function runs a window that occurs if the user email is entered incorrectly.
+
+    Once the user presses 'OK' button,
+    the current window closes and they get back to the 'New Customer' window.
+
+    :return <class 'bool'>
+    The function returns True of the button OK is pressed or window is closed
+    """
+
+    layout = [[sg.Text('ERROR:\nThe email format should be:\n****@***.***')],
+              [sg.OK()]]
+
+    window = sg.Window('Email Format Error', layout)
+    event, values = window.read()
+    window.close()
+    return True
+
+
 def run_window_main():
+    """
+    This function runs the main navigation window.
+
+    With pressing the 'New Customer' button the current window closes and the 'New Customer' window opens.
+    With pressing the 'Dashboard' button the current window closes and the 'Dashboard' window opens.
+    The current window closes and the program finishes if the 'Quit' or the red 'X' (in the upper window corner)
+    buttons are pressed.
+    """
+
     layoutNav = [
         [
             sg.Text("Welcome to Our Very Special GUI!\nHere's where you can go:", size=(350, 2),
@@ -73,16 +122,15 @@ def run_window_main():
     window_navigation.close()
 
 
-def email_validation_window():
-    layout = [[sg.Text('ERROR:\nThe email format should be:\n****@***.***')],
-              [sg.OK()]]
-
-    window = sg.Window('Email Format Error', layout)
-    event, values = window.read()
-    window.close()
-
-
 def run_window_new_customer():
+    """
+    This function runs a 'New Customer' window.
+
+    The window runs as long as it's not closed by the customer
+    with buttons 'Quit' or usual red 'X' button in the upper corner of the window.
+    It has input fields and the button 'Add' which adds a record of a new customer to the 'Customers' table.
+    In order to do so, it uses 'run_sql_command' function
+    """
 
     # gender_values, dob_values and lan_values are to be displayed in drop-down menus (element 'Combo')
     gender_values = ['Male', 'Female', 'Other']
@@ -176,7 +224,11 @@ def run_window_new_customer():
                 run_sql_command(sql_command)
                 del sql_command
             else:
-                email_validation_window() #displaying a warning window for incorrect email
+                # disabling the current window for the input
+                # and displaying a warning window for incorrect email
+                window_new_customer.disable()
+                if email_validation_window():
+                    window_new_customer.enable()
 
         elif event in (None, 'Quit'):
             break
@@ -189,6 +241,14 @@ def run_window_new_customer():
 
 
 def run_window_dashboard():
+    """
+    This function runs a 'Dashboard' window.
+
+    With the help of buttons the average number of items per order and average cost of an order are displayed.
+    By pressing the 'Plot The Histogram' button the customer can display the histogram plot of
+    the delivery distance for orders. In order to do so, the 'draw_plot' as well as
+    'run_sql_command' functions are used .
+    """
 
     navigation_section = [
 
