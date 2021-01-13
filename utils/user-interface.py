@@ -211,6 +211,7 @@ def run_window_new_customer():
 
             email_valid = re.search(".*@.*(\.).+", values['email'])  # validating the entered email address
             if email_valid:
+                # values check
                 # print("Adding the following values to the 'customers' table:\n", values)
                 sql_command = f"""      INSERT INTO customers (gender, birth_year, 
                                                                 status, verified, 
