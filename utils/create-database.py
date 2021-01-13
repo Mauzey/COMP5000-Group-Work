@@ -7,13 +7,15 @@ import sqlite3
 customers_df = pd.read_csv("../data/customers.csv")
 vendors_df = pd.read_csv("../data/vendors.csv")
 locations_df = pd.read_csv("../data/locations.csv")
-promo_codes_df = pd.read_csv("../data/promo-codes.csv")
 orders_df = pd.read_csv("../data/orders.csv")
-vendor_cats_df = pd.read_csv("../data/vendor-categories.csv")
-vendor_tags_df = pd.read_csv("../data/vendor-tags.csv")
-vendor_ratings_df = pd.read_csv("../data/vendor-ratings.csv")
-customer_fav_vendors_df = pd.read_csv("../data/customer-fav-vendors.csv")
 
+vendor_categories_df = pd.read_csv("../data/vendor_categories.csv")
+vendor_category_relationships_df = pd.read_csv("../data/vendor_category_relationships.csv")
+vendor_tags_df = pd.read_csv("../data/vendor_tags.csv")
+vendor_tag_relationships_df = pd.read_csv("../data/vendor_tag_relationships.csv")
+vendor_ratings_df = pd.read_csv("../data/vendor_ratings.csv")
+promo_codes_df = pd.read_csv("../data/promo_codes.csv")
+customer_fav_vendors_df = pd.read_csv("../data/customer_fav_vendors.csv")
 
 
 # establish database connection
@@ -199,23 +201,42 @@ cursor.execute(
     """
     CREATE TABLE vendor_categories (
         id integer PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
-        vendor_id INT,
-        category VARCHAR(200),
-        FOREIGN KEY (vendor_id) REFERENCES vendors (id)
+        category VARCHAR(200)
     );
     """
 )
-i = 0
 for index, row in vendor_cats_df.iterrows():
     sql_command = """
         INSERT INTO vendor_categories (
-            id, vendor_id, category
-        ) VALUES (?, ?, ?);
+            id, category
+        ) VALUES (?, ?);
     """
-    data = (i, row['vendor_id'], row['category'])
+    data = (row['category_id'], row['category'])
 
     cursor.execute(sql_command, data)
-    i += 1
+
+
+# create and populate vendor_category_relationships table ###
+# ------------------------------------------------------- ###
+cursor.execute(
+    """
+    CREATE TABLE vendor_category_relationships (
+        vendor_id INT,
+        category_id INT,
+        FOREIGN KEY (vendor_id) REFERENCES vendors (id),
+        FOREIGN KEY (category_id) REFERENCES vendor_categories (id)
+    );
+    """
+)
+for index, row in vendor_category_relationships_df.iterrows():
+    sql_command = """
+        INSERT INTO vendor_category_relationships (
+            vendor_id, category_id
+        ) VALUES (?, ?);
+    """
+    data = (row['vendor_id'], row['category_id'])
+
+    cursor.execute(sql_command, data)
 
 
 # create and populate vendor_tags table ###
@@ -224,23 +245,42 @@ cursor.execute(
     """
     CREATE TABLE vendor_tags (
         id integer PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
-        vendor_id INT,
         tag VARCHAR(200),
-        FOREIGN KEY (vendor_id) REFERENCES vendors (id)
     );
     """
 )
-i = 0
 for index, row in vendor_tags_df.iterrows():
     sql_command = """
         INSERT INTO vendor_tags (
-            id, vendor_id, tag
-        ) VALUES (?, ?, ?);
+            id, tag
+        ) VALUES (?, ?);
     """
-    data = (i, row['vendor_id'], row['tag'])
+    data = (row['tag_id'], row['tag'])
 
     cursor.execute(sql_command, data)
-    i += 1
+
+
+# create and populate vendor_tag_relationships table ###
+# -------------------------------------------------- ###
+cursor.execute(
+    """
+    CREATE TABLE vendor_tag_relationships (
+        vendor_id INT,
+        tag_id INT,
+        FOREIGN KEY (vendor_id) REFERENCES vendors (id),
+        FOREIGN KEY (tag_id) REFERENCES vendor_tags (id)
+    );
+    """
+)
+for index, row in vendor_tag_relationships_df.iterrows():
+    sql_command = """
+        INSERT INTO vendor_tag_relationships (
+            id, tag
+        ) VALUES (?, ?);
+    """
+    data = (row['tag_id'], row['tag'])
+
+    cursor.execute(sql_command, data)
 
 
 # create and populate vendor_ratings table ###
