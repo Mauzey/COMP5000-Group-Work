@@ -55,7 +55,7 @@ for index, row in customers_df.iterrows():
 cursor.execute(
     """
     CREATE TABLE vendors (
-        id INT PRIMARY KEY NOT NULL UNIQUE,
+        id integer PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
         auth_id INT,
         latitude FLOAT,
         longitude FLOAT,
@@ -102,7 +102,7 @@ for index, row in vendors_df.iterrows():
 cursor.execute(
     """
     CREATE TABLE locations (
-        id INT PRIMARY KEY NOT NULL UNIQUE,
+        id integer PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
         location_type VARCHAR(200),
         latitude FLOAT,
         longitude FLOAT,
@@ -128,7 +128,7 @@ for index, row in locations_df.iterrows():
 cursor.execute(
     """
     CREATE TABLE promo_codes (
-        id INT PRIMARY KEY NOT NULL UNIQUE,
+        id integer PRIMARY KEY NOT NULL UNIQUE,
         code VARCHAR(200),
         discount_percentage FLOAT
     );
@@ -150,7 +150,7 @@ for index, row in promo_codes_df.iterrows():
 cursor.execute(
     """
     CREATE TABLE orders (
-        id INT PRIMARY KEY NOT NULL UNIQUE,
+        id integer PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
         customer_id INT,
         vendor_id INT,
         location_id INT,
@@ -198,7 +198,7 @@ for index, row in orders_df.iterrows():
 cursor.execute(
     """
     CREATE TABLE vendor_categories (
-        id INT PRIMARY KEY NOT NULL UNIQUE,
+        id integer PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
         vendor_id INT,
         category VARCHAR(200),
         FOREIGN KEY (vendor_id) REFERENCES vendors (id)
@@ -223,7 +223,7 @@ for index, row in vendor_cats_df.iterrows():
 cursor.execute(
     """
     CREATE TABLE vendor_tags (
-        id INT PRIMARY KEY NOT NULL UNIQUE,
+        id integer PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
         vendor_id INT,
         tag VARCHAR(200),
         FOREIGN KEY (vendor_id) REFERENCES vendors (id)
@@ -248,7 +248,7 @@ for index, row in vendor_tags_df.iterrows():
 cursor.execute(
     """
     CREATE TABLE vendor_ratings (
-        id INT PRIMARY KEY NOT NULL UNIQUE,
+        id integer PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
         vendor_id INT,
         customer_id INT,
         rating FLOAT,
@@ -274,7 +274,7 @@ for index, row in vendor_ratings_df.iterrows():
 cursor.execute(
     """
     CREATE TABLE customer_fav_vendors (
-        id INT PRIMARY KEY NOT NULL UNIQUE,
+        id integer PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
         customer_id INT,
         vendor_id INT,
         FOREIGN KEY (customer_id) REFERENCES customers (id),
