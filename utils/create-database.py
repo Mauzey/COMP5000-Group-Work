@@ -47,7 +47,7 @@ for index, row in customers_df.iterrows():
         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?);
     """
     data = (row['customer_id'], row['gender'], row['birth_year'], row['status'], row['verified'], row['language'],
-                  row['created_at'], row['updated_at'])
+            row['created_at'], row['updated_at'])
 
     cursor.execute(sql_command, data)
 
@@ -93,7 +93,7 @@ for index, row in vendors_df.iterrows():
     data = (row['vendor_id'], row['auth_id'], row['latitude'], row['longitude'], row['delivery_fee'],
             row['max_serving_dist'], row['opening_time'], row['opening_time_2'], row['preparation_time'],
             row['commission'], row['is_akeed_delivering'], row['discount_percentage'], row['status'], row['verified'],
-            row['rank'], row['language'], row['avg_rating'], row['one_click_vendor'], row['created_at'],
+            row['rank'], row['language'], row['avg_vendor_rating'], row['is_one_click'], row['created_at'],
             row['updated_at'], row['device_type'])
 
     cursor.execute(sql_command, data)
@@ -163,7 +163,6 @@ cursor.execute(
         is_rated VARCHAR(200),
         delivery_distance FLOAT,
         preparation_time VARCHAR(200),
-        delivery_time VARCHAR(200),
         order_accepted_time VARCHAR(200),
         driver_accepted_time VARCHAR(200),
         ready_for_pickup_time VARCHAR(200),
@@ -182,13 +181,13 @@ for index, row in orders_df.iterrows():
     sql_command = """
         INSERT INTO orders (
             id, customer_id, vendor_id, location_id, promo_code_id, n_items, price_due, payment_method, is_rated,
-            delivery_distance, preparation_time, delivery_time, order_accepted_time, driver_accepted_time,
+            delivery_distance, preparation_time, order_accepted_time, driver_accepted_time,
             ready_for_pickup_time, picked_up_time, delivered_time, delivery_date, created_at
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);
     """
     data = (row['order_id'], row['customer_id'], row['vendor_id'], row['location_id'], row['promo_code_id'],
             row['n_items'], row['price_due'], row['payment_method'], row['is_rated'], row['delivery_distance'],
-            row['preparation_time'], row['delivery_time'], row['order_accepted_time'], row['driver_accepted_time'],
+            row['preparation_time'], row['order_accepted_time'], row['driver_accepted_time'],
             row['ready_for_pickup_time'], row['picked_up_time'], row['delivered_time'], row['delivery_date'],
             row['created_at'])
 
@@ -205,7 +204,7 @@ cursor.execute(
     );
     """
 )
-for index, row in vendor_cats_df.iterrows():
+for index, row in vendor_categories_df.iterrows():
     sql_command = """
         INSERT INTO vendor_categories (
             id, category
@@ -245,7 +244,7 @@ cursor.execute(
     """
     CREATE TABLE vendor_tags (
         id integer PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
-        tag VARCHAR(200),
+        tag VARCHAR(200)
     );
     """
 )
@@ -275,10 +274,10 @@ cursor.execute(
 for index, row in vendor_tag_relationships_df.iterrows():
     sql_command = """
         INSERT INTO vendor_tag_relationships (
-            id, tag
+            vendor_id, tag_id
         ) VALUES (?, ?);
     """
-    data = (row['tag_id'], row['tag'])
+    data = (row['vendor_id'], row['tag_id'])
 
     cursor.execute(sql_command, data)
 
@@ -288,7 +287,6 @@ for index, row in vendor_tag_relationships_df.iterrows():
 cursor.execute(
     """
     CREATE TABLE vendor_ratings (
-        id integer PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
         vendor_id INT,
         customer_id INT,
         rating FLOAT,
@@ -300,13 +298,12 @@ cursor.execute(
 for index, row in vendor_ratings_df.iterrows():
     sql_command = """
         INSERT INTO vendor_ratings (
-            id, vendor_id, customer_id, rating
-        ) VALUES (?, ?, ?, ?);
+            vendor_id, customer_id, rating
+        ) VALUES (?, ?, ?);
     """
-    data = (i, row['vendor_id'], row['customer_id'], row['rating'])
+    data = (row['vendor_id'], row['customer_id'], row['rating'])
 
     cursor.execute(sql_command, data)
-    i += 1
 
 
 # create and populate customer_fav_vendors table ###
@@ -314,7 +311,6 @@ for index, row in vendor_ratings_df.iterrows():
 cursor.execute(
     """
     CREATE TABLE customer_fav_vendors (
-        id integer PRIMARY KEY AUTOINCREMENT NOT NULL UNIQUE,
         customer_id INT,
         vendor_id INT,
         FOREIGN KEY (customer_id) REFERENCES customers (id),
@@ -325,13 +321,12 @@ cursor.execute(
 for index, row in customer_fav_vendors_df.iterrows():
     sql_command = """
         INSERT INTO vendor_ratings (
-            id, customer_id, vendor_id
-        ) VALUES (?, ?, ?);
+            customer_id, vendor_id
+        ) VALUES (?, ?);
     """
-    data = (i, row['customer_id'], row['vendor_id'])
+    data = (row['customer_id'], row['vendor_id'])
 
     cursor.execute(sql_command, data)
-    i += 1
 
 
 # close database connection
